@@ -90,30 +90,28 @@ class Play extends Phaser.Scene {
             // Increase speed after 30 seconds
             this.timeElapsed += delta;
             if (this.timeElapsed >= this.speedIncreaseTime) {
-                this.ship01.increaseSpeed(3); // Increase speed of ship01
-                this.ship02.increaseSpeed(3); // Increase speed of ship02
-                this.ship03.increaseSpeed(3); // Increase speed of ship03
+                this.ship01.increaseSpeed(1);
+                this.ship02.increaseSpeed(1); 
+                this.ship03.increaseSpeed(1); 
                 this.timeElapsed = 0; // Reset the timer
             }
         }
 
-        // Check for collisions
+        // Check for collisions with ships and adjust the timer accordingly
         if (this.checkCollision(this.p1Rocket, this.ship03)) {
             this.p1Rocket.reset();
             this.shipExplode(this.ship03);
+            this.addTime(5); // Add 5 seconds for hitting spaceship
         }
         if (this.checkCollision(this.p1Rocket, this.ship02)) {
             this.p1Rocket.reset();
             this.shipExplode(this.ship02);
+            this.addTime(5); // Add 5 seconds for hitting spaceship
         }
         if (this.checkCollision(this.p1Rocket, this.ship01)) {
             this.p1Rocket.reset();
             this.shipExplode(this.ship01);
-        }
-
-        if (this.gameOver && Phaser.Input.Keyboard.JustDown(keyLEFT)) {
-            this.scene.start("menuScene");
-            this.music.stop();
+            this.addTime(5); // Add 5 seconds for hitting spaceship
         }
     }
 
@@ -127,6 +125,13 @@ class Play extends Phaser.Scene {
             this.gameOverHandler();
         }
     }
+
+    // Add or subtract time from the timer
+    addTime(seconds) {
+        this.timeLeft += seconds;
+        this.timerText.setText(`Time: ${this.timeLeft}`);
+    }
+    
 
     // Handle game over when the time runs out
     gameOverHandler() {
