@@ -1,3 +1,12 @@
+/*
+Nelson Ngo
+Rocket Patrol 
+Hrs
+For 1 pt: BGM | Increased spd after 30 secs | Randomize spaceship | movement Rocket control | 
+
+*/
+
+
 let config = {
     type: Phaser.AUTO,
     width: 640,
