@@ -17,12 +17,10 @@ class Play extends Phaser.Scene {
         // Initialize Rocket (p1)
         this.p1Rocket = new Rocket(this, game.config.width / 2, game.config.height - borderUISize - borderPadding, 'rocket').setOrigin(0.5, 0);
 
-        // add spaceships (x3) with random movement direction
+        // Add spaceships (x3) with random movement direction
         this.ship01 = new Spaceship(this, game.config.width + borderUISize * 6, borderUISize * 4, 'spaceship', 0, 30, Phaser.Math.Between(0, 1)).setOrigin(0, 0);
         this.ship02 = new Spaceship(this, game.config.width + borderUISize * 3, borderUISize * 5 + borderPadding * 2, 'spaceship', 0, 20, Phaser.Math.Between(0, 1)).setOrigin(0, 0);
         this.ship03 = new Spaceship(this, game.config.width, borderUISize * 6 + borderPadding * 4, 'spaceship', 0, 10, Phaser.Math.Between(0, 1)).setOrigin(0, 0);
-
-
 
         // Define input keys
         keyFIRE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
@@ -50,13 +48,24 @@ class Play extends Phaser.Scene {
         // Game over flag
         this.gameOver = false;
 
-        // 60-second play clock
-        scoreConfig.fixedWidth = 0;
-        this.clock = this.time.delayedCall(game.settings.gameTimer, () => {
-            this.add.text(game.config.width / 2, game.config.height / 2, 'GAME OVER', scoreConfig).setOrigin(0.5);
-            this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press (R) to Restart or ← for Menu', scoreConfig).setOrigin(0.5);
-            this.gameOver = true;
-        }, null, this);
+        // Game timer
+        this.timeLeft = game.settings.gameTimer / 1000; // Convert milliseconds to seconds
+        this.timerText = this.add.text(game.config.width - 175, borderUISize + borderPadding * 2, `Time: ${this.timeLeft}`, {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '#F3B141',
+            color: '#843605',
+            align: 'right',
+            padding: { top: 5, bottom: 5 }
+        });
+
+        // Timer event to update the time
+        this.time.addEvent({
+            delay: 1000,
+            callback: this.updateTimer,
+            callbackScope: this,
+            loop: true
+        });
 
         // Timer to increase speed after 30 seconds
         this.timeElapsed = 0;
@@ -106,6 +115,38 @@ class Play extends Phaser.Scene {
             this.scene.start("menuScene");
             this.music.stop();
         }
+    }
+
+    // This function updates the timer every second
+    updateTimer() {
+        this.timeLeft -= 1; // Subtract 1 second every loop
+        this.timerText.setText(`Time: ${this.timeLeft}`);
+
+        // Check if time's up and game over
+        if (this.timeLeft <= 0) {
+            this.gameOverHandler();
+        }
+    }
+
+    // Handle game over when the time runs out
+    gameOverHandler() {
+        this.gameOver = true;
+        this.add.text(game.config.width / 2, game.config.height / 2, 'GAME OVER', {
+            fontFamily: 'Courier',
+            fontSize: '32px',
+            backgroundColor: '#F3B141',
+            color: '#843605',
+            align: 'center',
+            padding: { top: 5, bottom: 5 }
+        }).setOrigin(0.5);
+        this.add.text(game.config.width / 2, game.config.height / 2 + 64, 'Press (R) to Restart or ← for Menu', {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '#F3B141',
+            color: '#843605',
+            align: 'center',
+            padding: { top: 5, bottom: 5 }
+        }).setOrigin(0.5);
     }
 
     checkCollision(rocket, ship) {

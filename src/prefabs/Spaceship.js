@@ -20,6 +20,11 @@ class Spaceship extends Phaser.GameObjects.Sprite {
             this.reset();
         }
     }
+
+    // Method to increase the spaceship's speed
+    increaseSpeed(amount) {
+        this.moveSpeed += amount; // Increase speed by the given amount
+    }
     
     reset() {
         // Reset the position to the opposite side of the screen
