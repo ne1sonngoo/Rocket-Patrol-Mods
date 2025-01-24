@@ -3,8 +3,20 @@ class Rocket extends Phaser.GameObjects.Sprite {
         super(scene, x, y, texture, frame);
         this.sfxShot = scene.sound.add('sfx-shot');
         scene.add.existing(this);
-        this.isFiring = false;
         this.moveSpeed = 2;
+
+        // Fire text setup
+        this.fireText = scene.add.text(
+            game.config.width / 2,
+            game.config.height - borderUISize - borderPadding,
+            "FIRE",
+            {
+                fontFamily: 'Courier',
+                fontSize: '28px',
+                color: '#FF0000', // Red text
+                align: 'center',
+            }
+        ).setOrigin(0.5).setVisible(false); // Initially hidden
     }
 
     update() {
@@ -18,9 +30,14 @@ class Rocket extends Phaser.GameObjects.Sprite {
 
         if (Phaser.Input.Keyboard.JustDown(keyFIRE) && !this.isFiring) {
             this.isFiring = true;
+            this.fireText.setVisible(true); 
             this.sfxShot.play();
-            this.isFired = true;  // Set isFired to true when rocket is fired
-            this.fire(this.x, this.y);  // Call fire method
+            this.isFired = true;  
+            this.fire(this.x, this.y);  
+
+            this.scene.time.delayedCall(500, () => {
+                this.fireText.setVisible(false); 
+            });
         }
 
         if (this.isFiring && this.y >= borderUISize * 3 + borderPadding) {
@@ -29,19 +46,18 @@ class Rocket extends Phaser.GameObjects.Sprite {
 
         if (this.y < borderUISize * 3 + borderPadding) {
             this.isFiring = false;
-            this.scene.addTime(-5);
+            this.scene.addTime(-5); 
             this.y = game.config.height - borderUISize - borderPadding;
         }
 
-        // If the rocket is fired, allow the player to control its movement
+        
         if (this.isFired) {
             if (keyLEFT.isDown) {
-                this.x -= 5; // Move left
+                this.x -= 5; 
             } else if (keyRIGHT.isDown) {
-                this.x += 5; // Move right
+                this.x += 5;
             }
 
-            // Ensure the rocket stays within the game boundaries
             if (this.x < 0) {
                 this.x = 0;
             } else if (this.x > game.config.width) {

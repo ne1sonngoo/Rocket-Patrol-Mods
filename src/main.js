@@ -2,8 +2,8 @@
 Nelson Ngo
 Rocket Patrol 
 Hrs
-For 1 pt: BGM | Increased spd after 30 secs | Randomize spaceship | movement Rocket control (4 pts total)
-For 3 pts: Added time remaining | parallax scrolling (6 pts total)
+For 1 pt: BGM | Increased spd after 30 secs | Randomize spaceship | movement Rocket control | new scrolling tile sprite background | added fire ui (6 pts total)
+For 3 pts: Added time remaining | parallax scrolling | added new title screen (9 pts total)
 For 5 pts added/subract timer when hit or miss (5 pts total)
 */
 

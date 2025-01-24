@@ -5,12 +5,12 @@ class Play extends Phaser.Scene {
 
     create() {
         // Initialize tile sprite background
-        this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
+        this.starfield1 = this.add.tileSprite(0, 0, 640, 480, 'starfield1').setOrigin(0, 0);
         this.planets = this.add.tileSprite(0, 0, 640, 480, 'planets').setOrigin(0, 0);
-        this.planets.alpha = 0.2
+        this.planets.alpha = 0.3
 
-        this.starfield.setDepth(0);
-        this.planets.setDepth(0);
+        this.starfield1.setDepth(0);
+        this.planets.setDepth(2);
 
         // Create green UI background and borders
         this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0, 0);
@@ -65,7 +65,7 @@ class Play extends Phaser.Scene {
             align: 'right',
             padding: { top: 5, bottom: 5 }
         });
-
+        
         // Timer event to update the time
         this.time.addEvent({
             delay: 1000,
@@ -85,7 +85,7 @@ class Play extends Phaser.Scene {
             this.scene.restart();
         }
 
-        this.starfield.tilePositionX -= 4;
+        this.starfield1.tilePositionX -= 4;
         this.planets.tilePositionX -= 1;
 
         if (!this.gameOver) {
