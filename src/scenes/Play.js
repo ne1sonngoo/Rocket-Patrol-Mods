@@ -6,6 +6,11 @@ class Play extends Phaser.Scene {
     create() {
         // Initialize tile sprite background
         this.starfield = this.add.tileSprite(0, 0, 640, 480, 'starfield').setOrigin(0, 0);
+        this.planets = this.add.tileSprite(0, 0, 640, 480, 'planets').setOrigin(0, 0);
+        this.planets.alpha = 0.2
+
+        this.starfield.setDepth(0);
+        this.planets.setDepth(0);
 
         // Create green UI background and borders
         this.add.rectangle(0, borderUISize + borderPadding, game.config.width, borderUISize * 2, 0x00FF00).setOrigin(0, 0);
@@ -21,6 +26,8 @@ class Play extends Phaser.Scene {
         this.ship01 = new Spaceship(this, game.config.width + borderUISize * 6, borderUISize * 4, 'spaceship', 0, 30, Phaser.Math.Between(0, 1)).setOrigin(0, 0);
         this.ship02 = new Spaceship(this, game.config.width + borderUISize * 3, borderUISize * 5 + borderPadding * 2, 'spaceship', 0, 20, Phaser.Math.Between(0, 1)).setOrigin(0, 0);
         this.ship03 = new Spaceship(this, game.config.width, borderUISize * 6 + borderPadding * 4, 'spaceship', 0, 10, Phaser.Math.Between(0, 1)).setOrigin(0, 0);
+
+
 
         // Define input keys
         keyFIRE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
@@ -79,6 +86,7 @@ class Play extends Phaser.Scene {
         }
 
         this.starfield.tilePositionX -= 4;
+        this.planets.tilePositionX -= 1;
 
         if (!this.gameOver) {
             this.p1Rocket.update();
@@ -113,6 +121,7 @@ class Play extends Phaser.Scene {
             this.shipExplode(this.ship01);
             this.addTime(5); // Add 5 seconds for hitting spaceship
         }
+        
     }
 
     // This function updates the timer every second
